@@ -1,0 +1,86 @@
+<%-include('header')%>
+
+
+<div class="card">
+    <h5 class="card-header">Table Basic</h5>
+    <div class="table-responsive text-nowrap">
+      <table class="table">
+        <thead>
+          <tr>
+          
+            <th>Extra Category</th>
+            <th>SubCategory</th>
+            <th>Category</th>
+            <th>Status</th>
+            
+
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody class="table-border-bottom-0">
+            <%if(ecateData != ''){%>
+                <%for(var ad of ecateData){%>
+          <tr>
+            <td><i class="mdi mdi-wallet-travel mdi-20px text-danger me-3"></i><span class="fw-medium"><%=ad.ecateName%></span></td>
+            <td><i class="mdi mdi-wallet-travel mdi-20px text-danger me-3"></i><span class="fw-medium"><%=ad.subcategory.scateName%></span></td>
+            <td><i class="mdi mdi-wallet-travel mdi-20px text-danger me-3"></i><span class="fw-medium"><%=ad.category.cateName%></span></td>
+           
+            
+            
+            <%if(ad.isActive){%>
+              <td><a href="/admin/ecate/isActive/<%=ad.id%>" title="IsActive"  class="badge rounded-pill bg-label-primary me-1" style="border-radius: 45%;">Active</i></a></td>
+              <%} else{%>
+                  <td><a href="/admin/ecate/deActive/<%=ad.id%>" title="DeActive"  class="badge rounded-pill bg-label-danger me-1" style="border-radius: 45%;">DeActive</a></td>
+              <%}%>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="mdi mdi-dots-vertical"></i></button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="/admin/ecate/updateecat/<%=ad.id%>"><i class="mdi mdi-pencil-outline me-1"></i> Edit</a>
+                   </div>
+              </div>
+            </td>
+          </tr>
+          <%}%>
+          <%} else{%>
+              <div style="background-color: #fff !important; text-align: center; display: flex; justify-content: center; align-items: center; width: 100%; height: 70px;" >
+                  <h4 style="color: #6c757d;">No Record Found</h4>
+              </div>
+          <%}%>
+         
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+        <ul class="pagination pagination-rounded justify-content-end mb-3">
+            <li class="page-item">
+                <% var prevPage = parseInt(currentPage)-1%>
+                <% if(prevPage>=0){%>
+                    <a class="page-link" href="?page=<%=prevPage%>" aria-label="Previous">
+                        <span aria-hidden="true">«</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                <%}%>
+            </li>
+            <%for (var i=0; i<totaldocument; i++){%>
+                <li class="page-item <%if(currentPage==i){%> <%='active'%> <%}%>"><a class="page-link" href="?page=<%=i%>&search=<%=searchValue%>"><%=i+1%></a></li>
+            <%}%>
+            <% var nextPage = parseInt(currentPage)+1%>
+            <li class="page-item">
+                <% if (totaldocument>nextPage){%>
+                    <a class="page-link" href="?page=<%=nextPage%>" aria-label="Next">
+                        <span aria-hidden="true">»</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                <%}%>
+                </li>
+        </ul>
+    </div> <!-- end col-->
+</div>
+  <!--/ Basic Bootstrap Table -->
+  
+  <hr class="my-5">
+
+<%-include('footer')%>

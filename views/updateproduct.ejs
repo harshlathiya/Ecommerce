@@ -1,0 +1,153 @@
+<%-include('header')%>
+
+<section class="content-main">
+    <div class="content-header">
+        <h2 class="content-title">Add Product </h2>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="row gx-5">
+                <div class="col-xxl">
+                    <section class="content-body p-xl-4">
+                        <form action="/admin/product/edit_product" method="post" enctype="multipart/form-data">
+                            <div class="row">
+                                <input type="hidden" name="EditId" value="<%=productRecord.id%>">
+                                <div class="card-box">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <label class="form-label col-lg-2">Select category</label>
+                                        <select class="form-select" name="category" id="product-category" onchange="return getsubcat()">
+                                           
+                                            <% cate.map((v,i)=>{%>
+                                                <option value="<%=v.id%>"<%if(productRecord.category.cateName==v.cateName){%> <%='selected'%> <%}%>><%=v.cateName%></option>
+                                            <%})%>
+                                        </select>
+                                    </div>
+                                    <div class="d-flex align-items-center mb-3">
+                                        <label class="form-label col-lg-2">Select Subcategory</label>
+                                        <select class="form-select" name="subcategory" id="product-subcategory" onchange="getecat()">
+                                            <option>Select</option>
+                                            <% subcate.map((v,i)=>{%>
+                                                <option value="<%=v.id%>"<%if(productRecord.subcategory.scateName==v.scateName){%> <%='selected'%> <%}%>><%=v.scateName%></option>
+                                            <%})%>
+                                        </select>
+                                    </div>
+                                    <div class="d-flex align-items-center mb-3">
+                                        <label class="form-label col-lg-2">Select Extracategory</label>
+                                        <select class="form-select" name="extracategory" id="product-ecategory" onchange="getbrand()">
+                                            <option>Select</option>
+                                            <% extracate.map((v,i)=>{%>
+                                                <option value="<%=v.id%>"<%if(productRecord.extracategory.ecateName==v.ecateName){%> <%='selected'%> <%}%>><%=v.ecateName%></option>
+                                            <%})%>
+                                        </select>
+                                    </div>
+                                    <div id="BrandType">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <label class="form-label col-lg-2">Select Brand</label>
+                                            <select class="form-select" name="brandname" id="product-brand" onchange="gettypes()">
+                                                <option>Select</option>
+                                                <% brand.map((v,i)=>{%>
+                                                    <option value="<%=v.id%>"<%if(productRecord.brandname.brandname==v.brandname){%> <%='selected'%> <%}%>><%=v.brandname%></option>
+                                                <%})%>
+                                            </select>
+                                        </div>
+                                        <div class="d-flex align-items-center mb-3">
+                                            <label class="form-label col-lg-2">Select Type</label>
+                                            <select class="form-select" name="typeName" id="product-type">
+                                                <option>Select</option>
+                                                <% typeData.map((v,i)=>{ %>
+                                                    <option value="<%=v.id%>"<%if(productRecord.typeName.typeName==v.typeName){%> <%='selected'%> <%}%>><%=v.typeName%></option>
+                                                    <% }) %>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex gx-4 align-items-center mb-3">
+                                        <label class="form-label col-lg-2">Add Product</label>
+                                        <input type="text" placeholder="Product Name" value="<%=productRecord.product_title%>" class="form-control"
+                                            name="product_title">
+                                    </div>
+                                    <div class="d-flex gx-4 align-items-center mb-3">
+                                        <label class="form-label col-lg-2">Product Price</label>
+                                        <input type="text" placeholder="Product Price" value="<%=productRecord.product_price%>" class="form-control"
+                                            name="product_price">
+                                    </div>
+                                    <div class="d-flex gx-4 align-items-center mb-3">
+                                        <label class="form-label col-lg-2">Old Price</label>
+                                        <input type="text" placeholder="Old Price" value="<%=productRecord.product_old_price%>" class="form-control"
+                                            name="product_old_price">
+                                    </div>
+                                    <div class="d-flex gx-4 align-items-center mb-3">
+                                        <label class="form-label col-lg-2">Product Description</label>
+                                        <textarea name="product_Discription" class="form-control" cols="30"
+                                            rows="10"><%=productRecord.product_Discription%></textarea>
+                                    </div>
+                                    <div class="col-lg-12  mb-3 d-flex align-items-center">
+                                        <label class="form-label col-lg-2">Product Size</label>
+                                        <div class="d-flex">
+                                            <label class="form-check ms-2">
+                                                <span class="form-check-label">36</span>
+                                                <input class="form-check-input" name="Product_size" type="radio"
+                                                    value="36" <% if(productRecord.Product_size=='36'){%><%= 'checked'%><%}%>>
+                                            </label>
+                                            <label class="form-check ms-2">
+                                                <span class="form-check-label"> 38</span>
+                                                <input class="form-check-input" name="Product_size" type="radio"
+                                                    value="38" <% if(productRecord.Product_size=='38'){%><%= 'checked'%><%}%>>
+                                            </label>
+                                            <label class="form-check ms-2">
+                                                <span class="form-check-label"> 40</span>
+                                                <input class="form-check-input" name="Product_size" type="radio"
+                                                    value="40" <% if(productRecord.Product_size=='40'){%><%= 'checked'%><%}%>>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12  mb-3 d-flex align-items-center">
+                                        <label class="form-label col-lg-2">Product Colour</label>
+                                        <div class="d-flex">
+                                            <label class="form-check ms-2">
+                                                <span class="form-check-label">Gray</span>
+                                                <input class="form-check-input" name="Product_color" type="radio"
+                                                    value="Gray" <% if(productRecord.Product_color=='Gray'){%><%= 'checked'%><%}%>>
+                                            </label>
+                                            <label class="form-check ms-2">
+                                                <span class="form-check-label"> Black</span>
+                                                <input class="form-check-input" name="Product_color" type="radio"
+                                                    value="Black" <% if(productRecord.Product_color=='Black'){%><%= 'checked'%><%}%>>
+                                            </label>
+                                            <label class="form-check ms-2">
+                                                <span class="form-check-label"> White</span>
+                                                <input class="form-check-input" name="Product_color" type="radio"
+                                                    value="White" <% if(productRecord.Product_color=='White'){%><%= 'checked'%><%}%>>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex gx-4 align-items-center mb-3">
+                                        <label class="form-label col-lg-2">Product Image</label>
+                                        <input type="file" name="ProductImage" class="form-control" id="formFile">
+                                        <img src="<%=productRecord.ProductImage%>" alt="" height="80">
+                                    </div>
+                                    <div class="d-flex gx-4 align-items-center mb-3">
+                                        <label class="form-label col-lg-2">Product Images</label>
+                                        <input name="multipleproductimage" type="file" class="form-control" id="formFileMultiple" multiple>
+                                          
+
+                                        <div class="mydiv2" style="display: flex;">
+                                            <%for(var i = 0; i<productRecord.multipleproductimage.length;i++){%>
+                                                <div class="mydiv" style="position: relative; width: auto; margin: 0px 10px;" >
+                                                <img style="position: relative; " src="<%=productRecord.multipleproductimage[i] %>" height="40" alt="" >
+                                                <button style="border: none; border: 0; z-index: 9; top: -5px; right: -7px; background-color: transparent !important; position: absolute;"  onclick="return deleteimg('<%=productRecord.id%>','<%=i%>','<%=productRecord.multipleproductimage[i] %>')"><img src="/img/icons/close.png" style="width: 20px;" alt=""></button>
+                                             </div>
+                                            <%}%>
+                                        </div>  
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <button class="btn btn-primary" type="submit">Update Product</button>
+                        </form>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<%-include('footer')%>

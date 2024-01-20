@@ -1,0 +1,21 @@
+{
+  "_id": {
+    "$oid": "658c2a6613aaccfe0f6b74ba"
+  },
+  "name": "harsh ",
+  "email": "harsh@gmail.com",
+  "password": "123456",
+  "description": "test",
+  "city": "Surat",
+  "gender": "Male",
+  "hobby": [
+    "Singing",
+    "Running",
+    "Eating"
+  ],
+  "adminImage": "/uploads/adminImages/adminImage-1703684710721",
+  "isActive": true,
+  "currentDate": "27/12/2023, 7:15:10 pm",
+  "updateDate": "27/12/2023, 7:15:10 pm",
+  "__v": 0
+}

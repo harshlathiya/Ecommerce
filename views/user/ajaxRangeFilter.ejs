@@ -1,0 +1,57 @@
+<% for(var pd of pro){%>
+    <div class="col-6 col-md-4 col-lg-4">
+        <div class="product product-7 text-center">
+            <figure class="product-media">
+                <a href="/prodetails/<%=pd.id%>">
+                    <img src="<%=pd.ProductImage%>" alt="Product image" class="product-image">
+                </a>
+
+                <div class="product-action-vertical">
+                    <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
+                    <a href="popup/quickView.html" class="btn-product-icon btn-quickview" title="Quick view"><span>Quick view</span></a>
+                    <a href="#" class="btn-product-icon btn-compare" title="Compare"><span>Compare</span></a>
+                </div><!-- End .product-action-vertical -->
+
+                <form action="/insertCart" method="post">
+                    <input type="text" name="productId" value="<%= pd.id%>" hidden>
+                                <input type="number" name="quantity"  value="1" hidden>
+                    
+                        <% if(locals.userdetails){%>
+                            <div class="product-action">
+                                <button  type="submit" class="btn-product btn-cart" style="border: none; width: 100%;"><span> ADD TO CART</span></button>
+                            </div><!-- End .product-action -->
+                        <%} else {%>
+                            <a href="/loginuser" class="btn btn-primary" style="border: none; width: 100%;"><i class="fa fa-shopping-cart inner-right-vs"></i> ADD TO CART</a>
+                        <%}%>
+                    
+                </form>
+            </figure><!-- End .product-media -->
+
+            <div class="product-body">
+                <div class="product-cat">
+                    <a href="#"><%=pd.subcategory.scateName%></a>
+                </div><!-- End .product-cat -->
+                <h3 class="product-title"><a href="/prodetails/<%=pd.id%>"><%=pd.product_title%></a></h3><!-- End .product-title -->
+                <div class="product-price">
+                    $<%=pd.product_price%>
+                </div><!-- End .product-price -->
+                <div class="ratings-container">
+                    <div class="ratings">
+                        <div class="ratings-val" style="width: 0%;"></div><!-- End .ratings-val -->
+                    </div><!-- End .ratings -->
+                    <span class="ratings-text">( 0 Reviews )</span>
+                </div><!-- End .rating-container -->
+
+                <div class="product-nav product-nav-thumbs">
+
+                    <%for(var i=0 ; i< pd.multipleproductimage.length; i++){%>
+                    <a href="#" class="active">
+                        <img src="<%=pd.multipleproductimage[i]%>" alt="product desc">
+                    </a>
+                   <%}%>
+                </div><!-- End .product-nav -->
+            </div><!-- End .product-body -->
+        </div><!-- End .product -->
+    </div><!-- End .col-sm-6 col-lg-4 -->
+
+    <%}%>

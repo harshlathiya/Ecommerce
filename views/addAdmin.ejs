@@ -1,0 +1,162 @@
+<%- include('header')%>
+
+
+
+  <div class="content-wrapper">
+
+    <!-- Content -->
+
+    <div class="container-xxl flex-grow-1 container-p-y">
+      <div class="msgs">
+        <% if(message.length>=1){ %>
+          <div class="demo">
+            <% if(message) { %>
+              <div class="alert alert-info">
+                <%= message %>
+              </div>
+
+              <%}%>
+          </div>
+          <% } %>
+      </div>
+      <h4 class="py-3 mb-4"><span class="text-muted fw-light">Forms/</span> Vertical Layouts</h4>
+
+      <!-- Basic Layout -->
+      <div class="row mb-4">
+        <!-- Browser Default -->
+        <div class="col-md mb-4 mb-md-0">
+          <div class="card">
+            <h5 class="card-header">Browser Default</h5>
+            <div class="card-body">
+              <form id="formAuthentication" action="/admin/insertAdminData" method="post" enctype="multipart/form-data">
+                <div class="form-floating form-floating-outline mb-4">
+                  <input type="text" class="form-control" name="name" id="basic-default-name" placeholder="John Doe"
+                    required />
+                  <label for="basic-default-name">Name</label>
+                </div>
+                <div class="form-floating form-floating-outline mb-4">
+                  <input type="email" name="email" id="newuseremail" class="form-control" onkeyup="return checkemail()"
+                    placeholder="john.doe" required />
+                  <label for="basic-default-email">Email</label>
+                  <span id="error" style="color: red;"></span>
+                </div>
+                <div class="mb-4 form-password-toggle">
+                  <div class="input-group input-group-merge">
+                    <div class="form-floating form-floating-outline">
+                      <input type="password" id="password" class="form-control" name="password"
+                        onkeyup="return checkpassword()"
+                        placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                        aria-describedby="password" />
+                      <label for="password">New Password(Six Digit)</label>
+                      <span id="passerror" style="color: red;"></span>
+                    </div>
+
+                    <span class="input-group-text cursor-pointer" id="basic-default-password3"><i
+                        class="mdi mdi-eye-off-outline"></i></span>
+                  </div>
+                </div>
+                <div class="form-floating form-floating-outline mb-4">
+
+                  <% var city=['Surat','Vadodara','Rajkot','Ahemdabad','Bhavnagar','Amreli']%>
+
+                    <select class="form-select" id="basic-default-country" name="city" required>
+                      <option value="">Select City</option>
+                      <%city.map((v,i)=>{%>
+                        <option value="<%=v%>">
+                          <%=v%>
+                        </option>
+                        <%})%>
+                    </select>
+                    <label for="basic-default-country">City</label>
+                </div>
+
+                <div class="form-floating form-floating-outline mb-4">
+                  <input type="file" class="form-control" name="adminImage" id="basic-default-upload-file" required />
+                  <label for="basic-default-upload-file">Profile pic</label>
+                </div>
+                <div class="mb-4">
+                  <label class="d-block form-label">Gender</label>
+                  <div class="form-check mb-2">
+                    <input type="radio" id="basic-default-radio-male" value="Male" name="gender"
+                      class="form-check-input" required checked />
+                    <label class="form-check-label" for="basic-default-radio-male">Male</label>
+                  </div>
+                  <div class="form-check">
+                    <input type="radio" id="basic-default-radio-female" value="Female" name="gender"
+                      class="form-check-input" required />
+                    <label class="form-check-label" for="basic-default-radio-female">Female</label>
+                  </div>
+                </div>
+                <div class="col-md py-4">
+                  <small class="text-light fw-medium d-block">Hobbys</small>
+                  <div class="form-check form-check-inline mt-3">
+                    <input class="form-check-input" type="checkbox" id="inlineCheckbox1" name="hobby[]"
+                      value="Singing" />
+                    <label class="form-check-label" for="inlineCheckbox1">Singing</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="inlineCheckbox2" name="hobby[]"
+                      value="Running" />
+                    <label class="form-check-label" for="inlineCheckbox2">Running</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="inlineCheckbox3" name="hobby[]"
+                      value="Eating" />
+                    <label class="form-check-label" for="inlineCheckbox3">Eating</label>
+                  </div>
+                </div>
+                <div class="form-floating form-floating-outline mb-4">
+                  <textarea class="form-control h-px-75" id="basic-default-bio" name="description"
+                    placeholder="My name is john" rows="3" required></textarea>
+                  <label for="basic-default-bio">Bio</label>
+                </div>
+                <div class="mb-3">
+                  <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="basic-default-checkbox" required />
+                    <label class="form-check-label" for="basic-default-checkbox">Agree to our terms and
+                      conditions</label>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label class="switch switch-primary">
+                    <input type="checkbox" class="switch-input" required />
+                    <span class="switch-toggle-slider">
+                      <span class="switch-on"></span>
+                      <span class="switch-off"></span>
+                    </span>
+                    <span class="switch-label">Send me related emails</span>
+                  </label>
+                </div>
+                <div class="row">
+                  <div class="col-12">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <!-- /Browser Default -->
+
+        <!-- Bootstrap Validation -->
+
+        <!-- /Bootstrap Validation -->
+      </div>
+
+
+
+
+
+      <!-- Form Alignment -->
+
+    </div>
+    <!-- / Content -->
+
+
+
+
+
+
+    <!-- ========== tab components end ========== -->
+
+    <%- include('footer')%>

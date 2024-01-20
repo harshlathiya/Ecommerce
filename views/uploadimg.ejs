@@ -1,0 +1,33 @@
+<%-include('header')%>
+
+<section class="content-main">
+    <div class="content-header">
+        <h2 class="content-title">Add Product </h2>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="row gx-5">
+                <div class="col-xxl">
+                    <section class="content-body p-xl-4">
+                        <form action="/admin/product/insert_img" method="post" enctype="multipart/form-data">
+                            <div class="row">
+                                <div class="card-box">
+                                    <input type="text" name="id" value="<%=id%>" hidden >
+                                    <input type="text" name="i"  value="<%=i%>" hidden>
+                                    <input type="text" name="img" value="<%=img%>" hidden>
+                                    <div class="d-flex gx-4 align-items-center mb-3">
+                                        <label class="form-label col-lg-2">Product Images</label>
+                                        <input name="multipleproductimage" type="file" class="form-control" id="formFileMultiple" >
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <button class="btn btn-primary" type="submit">Update Image</button>
+                        </form>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<%-include('footer')%>
