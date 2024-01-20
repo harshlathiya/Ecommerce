@@ -2,13 +2,19 @@ const express = require('express');
 const port = 8007;
 const app = express();
 const path = require('path');
-const db = require('./config/mongoose');
+//const db = require('./config/mongoose');
+const mongoose = require('mongoose')
 const session = require('express-session');
 const passport = require('passport');
 const passportLocal = require('./config/passportStrategy');
 const cookieParser = require('cookie-parser');
 const flash = require('connect-flash');
-
+mongoose.connect(("mongodb+srv://harshlathiya90:4gJdpY0BkSS7tBwT@cluster0.z08bhcz.mongodb.net/Ecommerce"), {
+    useUnifiedTopology: true,
+    useNewUrlParser: true
+})
+    .then(() => console.log('Database Connected'))
+    .catch((err) => console.log(err));
 app.use(flash());
 app.use(cookieParser());
 
