@@ -4,6 +4,7 @@ const adminController = require('../controller/admincontroller')
 const Admin = require('../models/Admin');
 const passport = require('passport');
 
+
 routs.get("/",async (req,res)=>{
     
     if(req.user == undefined){
@@ -19,6 +20,7 @@ routs.get('/dashboard', (req,res)=>{
     }
     return res.render('dashboard')
 });
+
 routs.get('/addAdmin',passport.checkAthuntication,adminController.addAdmin);
 routs.post('/insertAdminData',passport.checkAthuntication,Admin.uploadImage,adminController.insertAdmin);
 routs.get('/viewAdmin',passport.checkAthuntication,adminController.viewAdmin);

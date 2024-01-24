@@ -2,7 +2,10 @@ const express = require('express')
 const routs = express.Router();
 const usercontroller = require('../controller/usercontroller');
 const passport = require('passport')
-
+const {body,validationResult} = require('express-validator');
+var validationforadduser =[
+    body('username').isLength({min:2}).withMessage('Minimum 2 character in Username')
+];
 
 routs.get('/',usercontroller.userhome);
 routs.get('/productlist/:cid/:sid/:eid',usercontroller.prolist);
@@ -10,13 +13,14 @@ routs.get('/productlistall',usercontroller.productlistall);
 routs.get('/productlistallscat/:id',usercontroller.productlistallscat);
 routs.get('/prodetails/:id',usercontroller.prodetails);
 routs.get('/loginuser',usercontroller.loginuser);
+routs.get('/loginuserdirect',usercontroller.loginuserdirect);
 routs.post('/ajaxRangeFilter',usercontroller.ajaxRangeFilter);
 routs.post('/ajaxRangeFilter2',usercontroller.ajaxRangeFilter2);
 routs.post('/ajaxRangeFilter3',usercontroller.ajaxRangeFilter3);
 routs.post('/ajaxBrandFilter',usercontroller.ajaxBrandFilter);
 routs.post('/ajaxBrandFilter2',usercontroller.ajaxBrandFilter2);
 routs.post('/ajaxBrandFilter3',usercontroller.ajaxBrandFilter3);
-routs.post('/userRegister',usercontroller.userRegister);
+routs.post('/userRegister',validationforadduser,usercontroller.userRegister);
 routs.post('/checkuserLogin',passport.authenticate('user',{failureRedirect:'/loginuser'}),usercontroller.checkuserLogin);
 
 

@@ -9,6 +9,7 @@ const passport = require('passport');
 const passportLocal = require('./config/passportStrategy');
 const cookieParser = require('cookie-parser');
 const flash = require('connect-flash');
+const {body,validationResult} = require('express-validator');
 mongoose.connect(("mongodb+srv://harshlathiya90:4gJdpY0BkSS7tBwT@cluster0.z08bhcz.mongodb.net/Ecommerce"), {
     useUnifiedTopology: true,
     useNewUrlParser: true
