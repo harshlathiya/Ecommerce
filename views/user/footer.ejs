@@ -367,7 +367,8 @@
         </div>
     </div>
 </div>
-<!-- Plugins JS File -->
+
+    
 <script src="/assets/js/jquery.min.js"></script>
 <script src="/assets/js/bootstrap.bundle.min.js"></script>
 <script src="/assets/js/jquery.hoverIntent.min.js"></script>
@@ -385,7 +386,36 @@
 <!-- Main JS File -->
 <script src="/assets/js/main.js"></script>
 <script src="/assets/js/demos/demo-4.js"></script>
-
+<script src="/assets/noty/noty.min.js"></script>
+<script>
+    <!-- Plugins JS File -->
+    <%if(locals.flash.success && locals.flash.success.length>0){%>
+        
+            new Noty({
+        type: 'success',
+        layout: 'topRight',
+        text: '<%= locals.flash.success %>',
+        timeout:2000
+        
+    
+    }).show();
+       
+        <%}%>
+    
+        <%if(locals.flash.error && locals.flash.error.length>0){%>
+            
+                new Noty({
+            type: 'success',
+            layout: 'topRight',
+            text: '<%= locals.flash.error %>',
+            timeout:2000
+            
+        
+        }).show();
+           
+            <%}%>
+           
+    </script>
 <script>
 
 
@@ -503,6 +533,10 @@ function getbrand2(brandId){
 function funpagerelode(){
     window.location.reload();
 }
+
+
+
+
 
 </script>
 </body>

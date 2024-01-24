@@ -37,6 +37,9 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(passport.setAuthenticatedUser);
+app.use(flash());
+const custom = require('./config/custommiddleware')
+app.use(custom.setflash);
 app.use('/admin',require('./routs/admin'));
 app.use('/',require('./routs/user'));
 app.listen(port,(err)=>{
