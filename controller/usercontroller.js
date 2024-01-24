@@ -8,6 +8,7 @@ const cart = require('../models/cart')
 const user = require('../models/user');
 const bcrypt = require('bcrypt');
 const order = require('../models/order')
+const { body,validationResult } = require('express-validator')
 
 var stripe = require('stripe')('sk_test_wFSjCKx4AW07JCc87b2fUwhH00zzjnRSJv');
 
@@ -34,6 +35,7 @@ module.exports.dashbord = async (req, res) => {
         'countCart': countCart
     });
 }
+
 module.exports.userhome = async (req, res) => {
     var countCart = 0;
     var cartPendingData = ''
@@ -54,6 +56,7 @@ module.exports.userhome = async (req, res) => {
         elec :electronics
     });
 }
+
 module.exports.checkout = async (req, res) => {
     var countCart = 0;
     var cartPendingData = ''
@@ -82,11 +85,13 @@ module.exports.checkout = async (req, res) => {
         'key': "pk_test_5RzHjUwGCx0aBvQYxmMprB1200k4WeKjIa"
     });
 }
+
 module.exports.loginuser = async (req, res) => {
     let catdata = await cat.find({});
     let scatdata = await scat.find({});
     let ecatdata = await ecat.find({});
     var countCart = 0;
+    var errors = ''
     var cartPendingData = ''
     if (req.user) {
         countCart = await cart.find({ userId: req.user.id, status: 'pending' }).countDocuments();
@@ -98,7 +103,30 @@ module.exports.loginuser = async (req, res) => {
         'scat': scatdata,
         'ecat': ecatdata,
         'cartData': cartPendingData,
-        'countCart': countCart
+        'countCart': countCart,
+        'errors':errors,
+    });
+}
+
+module.exports.loginuserdirect = async (req, res) => {
+    let catdata = await cat.find({});
+    let scatdata = await scat.find({});
+    let ecatdata = await ecat.find({});
+    var countCart = 0;
+    var errors = ''
+    var cartPendingData = ''
+    if (req.user) {
+        countCart = await cart.find({ userId: req.user.id, status: 'pending' }).countDocuments();
+        cartPendingData = await cart.find({ userId: req.user.id, status: 'pending' }).populate('productId').exec();
+    }
+
+    return res.render('user/login_main', {
+        'cat': catdata,
+        'scat': scatdata,
+        'ecat': ecatdata,
+        'cartData': cartPendingData,
+        'countCart': countCart,
+        'errors':errors,
     });
 }
 
@@ -225,6 +253,7 @@ module.exports.prolist = async (req, res) => {
 
 
 }
+
 module.exports.productlistallscat = async (req, res) => {
     let catdata = await cat.find({});
     let scatdata = await scat.find({});
@@ -319,6 +348,7 @@ module.exports.productlistallscat = async (req, res) => {
 
 
 }
+
 module.exports.productlistall = async (req, res) => {
     let catdata = await cat.find({});
     let scatdata = await scat.find({});
@@ -754,6 +784,7 @@ module.exports.ajaxBrandFilter2 = async (req, res) => {
     })
 
 }
+
 module.exports.ajaxBrandFilter3 = async (req, res) => {
 
 
@@ -812,12 +843,37 @@ module.exports.ajaxBrandFilter3 = async (req, res) => {
 
 }
 
-
 module.exports.userRegister = async (req, res) => {
     req.body.role = 'user';
     req.body.create_date = new Date().toLocaleString();
     req.body.updated_date = new Date().toLocaleString();
+    const errors= validationResult(req);
+    if(!errors.isEmpty()){
 
+       
+
+    let catdata = await cat.find({});
+    let scatdata = await scat.find({});
+    let ecatdata = await ecat.find({});
+    var countCart = 0;
+    
+    var cartPendingData = ''
+    if (req.user) {
+        countCart = await cart.find({ userId: req.user.id, status: 'pending' }).countDocuments();
+        cartPendingData = await cart.find({ userId: req.user.id, status: 'pending' }).populate('productId').exec();
+    }
+console.log(errors);
+    return res.render('user/login', {
+        'cat': catdata,
+        'scat': scatdata,
+        'ecat': ecatdata,
+        'cartData': cartPendingData,
+        'countCart': countCart,
+        errors: errors.array()
+    });
+
+    
+    }
     let checkemail = await user.findOne({ email: req.body.email });
     if (checkemail) {
         console.log("Email already register");
@@ -827,6 +883,7 @@ module.exports.userRegister = async (req, res) => {
         if (req.body.password == req.body.cpassword) {
             req.body.password = await bcrypt.hash(req.body.password, 10);
             await user.create(req.body);
+            console.log('added');
             return res.redirect('/');
         }
         else {
@@ -887,7 +944,6 @@ module.exports.insertCart = async (req, res) => {
     }
 }
 
-
 module.exports.viewcart = async (req, res) => {
     try {
         let countCart;
@@ -913,9 +969,6 @@ module.exports.viewcart = async (req, res) => {
     }
 }
 
-
-
-
 module.exports.changeQuantity = async (req, res) => {
     try {
         await cart.findByIdAndUpdate(req.body.cartId, { quantity: req.body.quantity });
@@ -926,8 +979,6 @@ module.exports.changeQuantity = async (req, res) => {
         return res.redirect("back");
     }
 }
-
-
 
 module.exports.deleteCart = async (req, res) => {
     try {
@@ -946,8 +997,6 @@ module.exports.deleteCart = async (req, res) => {
         return res.redirect("back");
     }
 }
-
-
 
 module.exports.payment = async (req, res) => {
     try {
