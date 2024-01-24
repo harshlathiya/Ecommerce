@@ -862,7 +862,7 @@ module.exports.userRegister = async (req, res) => {
         countCart = await cart.find({ userId: req.user.id, status: 'pending' }).countDocuments();
         cartPendingData = await cart.find({ userId: req.user.id, status: 'pending' }).populate('productId').exec();
     }
-console.log(errors);
+    //console.log(errors);
     return res.render('user/login', {
         'cat': catdata,
         'scat': scatdata,
@@ -877,6 +877,7 @@ console.log(errors);
     let checkemail = await user.findOne({ email: req.body.email });
     if (checkemail) {
         console.log("Email already register");
+        req.flash('error',"Email Already Registered")
         return res.redirect('back');
     }
     else {
@@ -884,10 +885,14 @@ console.log(errors);
             req.body.password = await bcrypt.hash(req.body.password, 10);
             await user.create(req.body);
             console.log('added');
+            req.flash('success',"Registration Successful.. Login Now")
+            
             return res.redirect('/');
         }
         else {
             console.log("Password not match");
+            req.flash('error',"Password not match")
+            
             return res.redirect('back');
         }
     }
@@ -896,30 +901,23 @@ console.log(errors);
 
 module.exports.checkuserLogin = async (req, res) => {
     try {
+        req.flash('success',"success")
         return res.redirect('/');
     }
     catch (err) {
         console.log(err);
+        req.flash('error',err)
         return res.redirect("back");
     }
 }
 
-module.exports.checkuserLogin = async (req, res) => {
-    try {
-        console.log('loggin');
-        return res.redirect('/');
-    }
-    catch (err) {
-        console.log(err);
-        return res.redirect("back");
-    }
-}
 
 module.exports.insertCart = async (req, res) => {
     try {
         let cartProduct = await cart.findOne({ productId: req.body.productId, userId: req.user.id });
         if (cartProduct) {
             console.log("Product is already into cart");
+            req.flash('error',"Product is already into cart")
             return res.redirect("back");
         }
         else {
@@ -930,10 +928,12 @@ module.exports.insertCart = async (req, res) => {
             let AddCart = await cart.create(req.body);
             if (AddCart) {
                 console.log("Product add into cart");
+                req.flash('success',"Product add into cart")
                 return res.redirect("back");
             }
             else {
                 console.log("something is wrong");
+                req.flash('error',"something is wrong")
                 return res.redirect("back");
             }
         }
@@ -976,6 +976,8 @@ module.exports.changeQuantity = async (req, res) => {
     }
     catch (err) {
         console.log(err);
+        req.flash('error',err)
+       
         return res.redirect("back");
     }
 }
@@ -984,11 +986,13 @@ module.exports.deleteCart = async (req, res) => {
     try {
         let de = await cart.findByIdAndDelete(req.params.id)
         if (de) {
-            console.log("Cart delete successfully");
+            console.log(" Delete successfully");
+            req.flash('success',"Delete successfully")
             return res.redirect(back);
         }
         else {
             console.log("Record not found");
+            req.flash('error','Record not found')
             return res.redirect('back');
         }
     }
@@ -1009,8 +1013,7 @@ module.exports.payment = async (req, res) => {
             sub = sub + cartPendingData2[i].quantity * cartPendingData2[i].productId.product_price;
 
         }
-        console.log(sub);
-        console.log('run');
+      
         stripe.customers.create({
             email: req.body.stripeEmail,
             source: req.body.stripeToken,
@@ -1034,7 +1037,7 @@ module.exports.payment = async (req, res) => {
         })
         .then( async(charge) => {
             // If no error occurs
-            console.log('run');
+            
             var cartid =[];
             var proid=[];
 
@@ -1042,15 +1045,14 @@ module.exports.payment = async (req, res) => {
                 cartid.push(v.id)
                 proid.push(v.productId.id)
             });
-            console.log(cartid);
-            console.log(proid);
+        
             req.body.userId=req.user.id;
             req.body.productId=proid;
             req.body.status ="confirm";
             req.body.cartId=cartid;
-            console.log('run4');
+            
             var or = await order.create(req.body);
-            console.log('runs................');
+            
             if(or){
                 cartPendingData.map(async(v,i)=>{
                     await cart.findByIdAndUpdate(v.id,{status:"confirm"})
