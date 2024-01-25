@@ -47,13 +47,16 @@ module.exports.userhome = async (req, res) => {
     let scatdata = await scat.find({});
     let ecatdata = await ecat.find({});
     let electronics = await scat.find({category:'659fdd06d605f31ce3cd1fe0'})
+    let electronicspro = await product.find({category:'659fdd06d605f31ce3cd1fe0'}).populate(['category', 'subcategory', 'extracategory', 'brandname', 'typeName']).exec();
+   // console.log(electronicspro);
     return res.render('user/home', {
         'cat': catdata,
         'scat': scatdata,
         'ecat': ecatdata,
         'cartData': cartPendingData,
         'countCart': countCart,
-        elec :electronics
+        elec :electronics,
+        epro:electronicspro
     });
 }
 
@@ -887,7 +890,7 @@ module.exports.userRegister = async (req, res) => {
             console.log('added');
             req.flash('success',"Registration Successful.. Login Now")
             
-            return res.redirect('/');
+            return res.redirect('/loginuserdirect');
         }
         else {
             console.log("Password not match");

@@ -34,5 +34,16 @@ routs.get('/checkout',passport.checkUserAuthentication,usercontroller.checkout);
 routs.post('/changeQuantity', passport.checkUserAuthentication ,usercontroller.changeQuantity);
 routs.get('/deleteCart/:id', passport.checkUserAuthentication, usercontroller.deleteCart);
 routs.post('/payment', passport.checkUserAuthentication, usercontroller.payment);
+
+routs.get('/google',
+  passport.authenticate('google', { scope: ['profile','email']}));
+
+routs.get('/google/callback', 
+  passport.authenticate('google', { failureRedirect: '/loginuserdirect' }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+   
+    res.redirect('/');
+  });
 module.exports = routs;
 
