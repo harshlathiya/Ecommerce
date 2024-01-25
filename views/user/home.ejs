@@ -151,9 +151,14 @@
 
            <div class="heading-right">
                 <ul class="nav nav-pills nav-border-anim justify-content-center" role="tablist">
+
+
                     <li class="nav-item">
                         <a class="nav-link active" id="new-all-link" data-toggle="tab" href="#new-all-tab" role="tab" aria-controls="new-all-tab" aria-selected="true">All</a>
                     </li>
+
+
+
                     <li class="nav-item">
                         <a class="nav-link" id="new-tv-link" data-toggle="tab" href="#new-tv-tab" role="tab" aria-controls="new-tv-tab" aria-selected="false">TV</a>
                     </li>
@@ -199,11 +204,13 @@
                             }
                         }
                     }'>
+
+                    <%for(var ep of epro){%>
                     <div class="product product-2">
                         <figure class="product-media">
                             <span class="product-label label-circle label-top">Top</span>
-                            <a href="/">
-                                <img src="/assets/images/demos/demo-4/products/product-1.jpg" alt="Product image" class="product-image">
+                            <a href="/prodetails/<%=ep.id%>">
+                                <img src="<%=ep.ProductImage%>" alt="Product image" class="product-image">
                             </a>
 
                             <div class="product-action-vertical">
@@ -211,18 +218,29 @@
                             </div><!-- End .product-action -->
 
                             <div class="product-action">
-                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to cart</span></a>
-                                <a href="popup/quickView.html" class="btn-product btn-quickview" title="Quick view"><span>quick view</span></a>
+                                <form action="/insertCart" method="post" style="display: contents;">
+                                                 <input type="hidden" name="productId" value="<%= ep.id%>" hidden>
+                                                <input type="hidden" name="quantity"  value="1" hidden>
+                                    
+                                        <% if(locals.userdetails){%>
+
+                                            <a type="submit" class="btn-product btn-cart" title="Add to cart"><span>add to cart</span></a>
+                                           
+                                        <%} else {%>
+                                            <a href="/loginuser" class="btn-product btn-cart" title="Add to cart"><span>add to cart</span></a>
+                                        <%}%>
+                                        <a href="#" class="btn-product btn-quickview" title="Quick view"><span>quick view</span></a>
+                                </form>
                             </div><!-- End .product-action -->
                         </figure><!-- End .product-media -->
 
                         <div class="product-body">
                             <div class="product-cat">
-                                <a href="#">Laptops</a>
+                                <a href="#"><%=ep.subcategory.scateName%></a>
                             </div><!-- End .product-cat -->
-                            <h3 class="product-title"><a href="/">MacBook Pro 13" Display, i5</a></h3><!-- End .product-title -->
+                            <h3 class="product-title"><a href="/prodetails/<%=ep.id%>"><%=ep.product_title%></a></h3><!-- End .product-title -->
                             <div class="product-price">
-                                $1,199.99
+                                $<%=ep.product_price%>
                             </div><!-- End .product-price -->
                             <div class="ratings-container">
                                 <div class="ratings">
@@ -232,7 +250,7 @@
                             </div><!-- End .rating-container -->
                         </div><!-- End .product-body -->
                     </div><!-- End .product -->
-
+                    <%}%>
                     <div class="product product-2">
                         <figure class="product-media">
                             <a href="/">
