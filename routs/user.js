@@ -45,5 +45,14 @@ routs.get('/google/callback',
    
     res.redirect('/');
   });
+
+
+  routs.get('/logout',(req,res)=>{
+    res.clearCookie("harsh");
+    if(req.user == undefined){
+            return res.redirect('/loginuserdirect');
+    }
+    return res.redirect('/')
+})
 module.exports = routs;
 
