@@ -918,10 +918,31 @@ module.exports.checkuserLogin = async (req, res) => {
 module.exports.insertCart = async (req, res) => {
     try {
         let cartProduct = await cart.findOne({ productId: req.body.productId, userId: req.user.id });
-        if (cartProduct) {
-            console.log("Product is already into cart");
-            req.flash('error',"Product is already into cart")
-            return res.redirect("back");
+       // console.log(cartProduct);
+        
+        if(cartProduct){
+            if(cartProduct.status == 'confirm'){
+                req.body.userId = req.user.id;
+                req.body.status = "pending";
+                req.body.create_date = new Date().toLocaleString();
+                req.body.updated_date = new Date().toLocaleString();
+                let AddCart = await cart.create(req.body);
+                if (AddCart) {
+                    console.log("Product add into cart");
+                    req.flash('success',"Product add into cart")
+                    return res.redirect("back");
+                }
+                else {
+                    console.log("something is wrong");
+                    req.flash('error',"something is wrong")
+                    return res.redirect("back");
+                }
+            }
+            else if (cartProduct.status == 'pending') {
+                console.log("Product is already into cart");
+                req.flash('error',"Product is already into cart")
+                return res.redirect("back");
+            }
         }
         else {
             req.body.userId = req.user.id;
@@ -952,7 +973,7 @@ module.exports.viewcart = async (req, res) => {
         let countCart;
         if (req.user) {
             countCart = await cart.find({ userId: req.user.id, status: 'pending' }).countDocuments();
-            cartPendingData = await cart.find({ userId: req.user.id, status: 'pending' }).populate('productId').exec();
+            cartPendingData = await cart.find({ userId: req.user.id, status: 'pending' }).populate('productId').exec(); 
         }
         let catdata = await cat.find({});
         let scatdata = await scat.find({});
