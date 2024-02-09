@@ -16,7 +16,9 @@
 - [Questions](#questions)
 
 ## Installation
+💾 npm init
 💾 npm install
+
 
 ## Usage
 💻 ecommerce
