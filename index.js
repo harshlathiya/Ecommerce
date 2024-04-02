@@ -1,5 +1,5 @@
 const express = require('express');
-const port = 8007;
+const port = 8005;
 const app = express();
 const path = require('path');
 //const db = require('./config/mongoose');
@@ -13,7 +13,6 @@ const {body,validationResult} = require('express-validator');
 const GoogleStrategy = require('./config/GoogleStrategy');
 
 mongoose.connect(("mongodb+srv://harshlathiya90:4gJdpY0BkSS7tBwT@cluster0.z08bhcz.mongodb.net/Ecommerce"), {
-    useUnifiedTopology: true,
     useNewUrlParser: true
 })
     .then(() => console.log('Database Connected'))
